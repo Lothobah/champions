@@ -1,0 +1,86 @@
+{% extends "bursar_templates/base_template.html" %}
+{% load static %}
+{% block main_content %}
+
+<div class="super_container">
+	<!-- Home -->
+
+	<!--<div class="home">
+
+	</div>-->
+				<h5 style="margin-top:80px; color: black; text-align:centre;">Welcome {{ bursar.admin.first_name }}</h5>
+				<div class="row" style="margin-left:10px; margin-right:10px;">
+
+					<div class="col-lg-4 hero_box_col">
+            <a href="{% url 'add_fees_to_students' %}"class="hero_box_link">
+						<div class="hero_box d-flex flex-row align-items-center justify-content-start">
+							<img src="{% static "images/fee.png" %}" class="svg" alt="">
+							<div class="hero_box_content" style="font-size:13px;">
+								<h6>Add Fees</h6>
+								 Click to add student fees.
+							</div>
+						</div></a>
+					</div>
+          
+					<div class="col-lg-4 hero_box_col">
+            <a href="{% url 'bursar_update_fees' %}" class="hero_box_link">
+						<div class="hero_box d-flex flex-row align-items-center justify-content-start">
+							<img src="{% static "images/check results.png" %}" class="svg" alt="">
+							<div class="hero_box_content" style="font-size:13px;">
+								<h6>Update Fees</h6>
+								Click to access students results.
+							</div>
+						</div>
+						</a>
+					</div>
+					<div class="col-lg-4 hero_box_col">
+						<a href="{% url 'select_level_to_view_fees' %}" class="hero_box_link">
+									<div class="hero_box d-flex flex-row align-items-center justify-content-start">
+										<img src="{% static "images/check results.png" %}" class="svg" alt="">
+										<div class="hero_box_content" style="font-size:13px;">
+											<h6>Fees.</h6>
+											Click to access student fees.
+										</div>
+									</div>
+									</a>
+								</div>
+
+					<div class="col-lg-4 hero_box_col">
+						<a href="{% url 'enroll_students' %}" class="hero_box_link">
+									<div class="hero_box d-flex flex-row align-items-center justify-content-start">
+										<img src="{% static "images/course_enroll.jpg" %}" class="svg" alt="">
+										<div class="hero_box_content" style="font-size:13px;">
+											<h6>Subject Enrollment</h6>
+											Click to enroll all students in the subjects you teach.
+										</div>
+									</div>
+									</a>
+								</div>
+			
+	</div>
+	<!-- Footer -->
+	<footer class="footer">
+		<div class="container">
+			
+			
+
+			<!-- Footer Content -->
+
+			<div class="footer_content">
+				
+			</div>
+
+			<!-- Footer Copyright -->
+
+			<div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
+				<div class="footer_copyright">
+
+				</div>
+				
+			</div>
+
+		</div>
+	</footer>
+
+</div>
+{% endblock main_content %}

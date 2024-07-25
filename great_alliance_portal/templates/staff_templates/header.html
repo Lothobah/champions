@@ -1,0 +1,86 @@
+{% load static %}
+
+<!-- ======= Header ======= -->
+<header id="header" style="height: 65px;">
+    <div class="container d-flex align-items-center justify-content-between" style="height: 40px;">
+
+        <div class="logo">
+            <h1><img src="{% static "assets/img/clients/client-4.png" %}" class="logo-image" alt="User Image">
+                <a href="{% url 'staff_homepage' %}" style="font-size: 14px;"
+                class="manage-staff-link">Great Alliance Portal | Staff<span>.</span>
+
+                </a>
+
+            </h1>
+        </div>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li>
+                    {% url 'staff_homepage' as staff_homepage %}
+                    <a class="nav-link scrollto {% if request.path == staff_homepage %} active {% endif %}" href="{% url 'staff_homepage' %}"
+                    id="staff_home">Home</a>
+                </li>
+
+                <!--<li>
+                    {% url 'staff_manage_students' as staff_manage_students %}
+                    <a class="nav-link scrollto {% if request.path == staff_manage_students %} active {% endif %}" href="{% url 'staff_manage_students' %}"
+                         id="hello_staff">
+                        Manage Students</a>
+                </li>-->
+                <!--<li>
+                    {% url 'staff_manage_students' as staff_manage_students %}
+                    <a class="nav-link scrollto {% if request.path == staff_manage_students %} active {% endif %}"
+                        href="{% url 'staff_manage_students' %}">Manage Students</a>
+                </li>-->
+                <!--<li>
+                    {% url 'start_live_classroom' as start_live_classroom %}
+                    <a href="{{ start_live_classroom }}" class="nav-link scrollto {% if request.path == start_live_classroom %} active {% endif %}">
+                        Start live classroom 
+                    </a>
+                </li>-->
+                
+                <li>
+                    {% url 'do_logout' as do_logout %}
+                    <a class="nav-link scrollto {% if request.path == do_logout %} active {% endif %}" href="{% url 'do_logout' %}">
+                        Log Off</a>
+                </li>
+
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+
+    </div>
+</header>
+
+
+
+<!--<header class="header d-flex flex-row">-->
+    <!--<div class="header_content d-flex flex-row align-items-center">-->
+        <!-- Logo -->
+        <!--<div class="logo_container">
+            <div class="logo">
+                <img src="{% static "images/logo.png" %}" alt="">
+                <span>Great Alliance|Staff</span>
+            </div>
+        </div>-->
+
+        <!-- Main Navigation -->
+        <!--<nav class="main_nav_container">
+            <div class="main_nav">
+                <ul class="main_nav_list">
+                    <li class="main_nav_item" {% if request.path == staff_homepage %} active {% endif %}><a href="{% url 'staff_homepage' %}">home</a></li>
+                    <li class="main_nav_item" {% if request.path == do_logout %} active {% endif %}>
+                        {% url 'do_logout' as do_logout %}
+                        <a href="{% url 'do_logout' %}">Log Off</a></li>
+                    
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="header_side d-flex flex-row justify-content-center align-items-center">
+        <img src="{% static "images/phone-call.svg" %}" alt="">
+        <span>+43 4566 7788 2457kooonimmmmmmmmmmmmmmmooo</span>
+    </div>
+
+</header>-->

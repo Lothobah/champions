@@ -1,0 +1,131 @@
+{% extends 'hod_templates/base_template.html' %}
+{% load static %}
+{% block main_content %}
+
+<main id="main">
+    <!-- ======= Services Section ======= -->
+    <section id="services" class="services section-bg" style="margin-top: 100px;
+    background: white;">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-6 d-flex" data-aos="">
+                    <a href="{% url 'add_level' %}">
+                        <div class="card">
+                            <div class="main-image-div">
+                                <a href="{% url 'add_level' %}" class="manage-staff-link">
+                                    <div class="image-circle">
+                                        <img src="https://img.icons8.com/material-outlined/96/000000/add-property.png"
+                                            class="add-staff-image" alt="User Image">
+                                    </div>
+                                    <p class="manage-link">Add Class</p>
+                                </a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-6 d-flex" data-aos="">
+                    <a href="{% url 'manage_level' %}">
+                        <div class="card">
+                            <div class="main-image-div">
+                                <a href="{% url 'manage_level' %}" class="manage-staff-link">
+                                    <div class="image-circle">
+                                        <img src="https://img.icons8.com/material-outlined/96/000000/add-property.png"
+                                            class="add-staff-image" alt="User Image">
+                                    </div>
+                                    <p class="manage-link">Update Class</p>
+                                </a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="col-md-6 d-flex" data-aos="">
+                    <a href="{% url 'add_academic_year' %}">
+                        <div class="card">
+                            <div class="main-image-div">
+                                <a href="{% url 'add_academic_year' %}" class="manage-staff-link">
+                                    <div class="image-circle">
+                                        <img src="https://img.icons8.com/ios/100/000000/add-tag.png"
+                                            class="add-staff-image" alt="User Image">
+                                    </div>
+                                    <p class="manage-link">Add Academic Year</p>
+                                </a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="col-md-6 d-flex" data-aos="">
+                    <a href="{% url 'add_course' %}">
+                        <div class="card">
+                            <div class="main-image-div">
+                                <a href="{% url 'add_course' %}" class="manage-staff-link">
+                                    <div class="image-circle">
+                                        <img src="https://img.icons8.com/ios/100/000000/add-property.png"
+                                            class="add-staff-image" alt="User Image">
+                                    </div>
+                                    <p class="manage-link">Add Subject</p>
+                                </a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 d-flex" data-aos="">
+                    <a href="{% url 'manage_course' %}">
+                        <div class="card">
+                            <div class="main-image-div">
+                                <a href="{% url 'manage_course' %}" class="manage-staff-link">
+                                    <div class="image-circle">
+                                        <img src="https://img.icons8.com/fluency/96/000000/school.png"
+                                         class="add-staff-image"
+                                            alt="User Image">
+                                    </div>
+                                    <p class="manage-link">All Subjects</p>
+                                </a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 d-flex" data-aos="">
+                    <a href="{% url 'students_by_level' %}">
+                        <div class="card">
+                            <div class="main-image-div">
+                                <a href="{% url 'students_by_level' %}" class="manage-staff-link">
+                                    <div class="image-circle">
+                                        <img src="https://img.icons8.com/fluency/96/000000/school.png" class="add-staff-image"
+                                            alt="User Image">
+                                    </div>
+                                    <p class="manage-link">View Student Results.</p>
+                                </a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 d-flex" data-aos="">
+                    <a href="{% url 'fees' %}">
+                        <div class="card">
+                            <div class="main-image-div">
+                                <a href="{% url 'fees' %}" class="manage-staff-link">
+                                    <div class="image-circle">
+                                        <img src="https://img.icons8.com/fluency/96/000000/school.png" class="add-staff-image"
+                                            alt="User Image">
+                                    </div>
+                                    <p class="manage-link">Fees</p>
+                                </a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </section><!-- End Services Section -->
+</main><!-- End #main -->
+
+
+{% endblock main_content %}

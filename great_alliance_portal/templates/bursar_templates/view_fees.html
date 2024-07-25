@@ -1,0 +1,140 @@
+{% extends "bursar_templates/base_template.html" %}
+
+{% block main_content %}
+<div class="super_container">
+    <div class="results-container">
+        {% if fees_by_level %}
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <div class="card" style="margin-top:70px;">
+                        <h5 style="margin-top:10px; text-align: center;"><b>{{ student_level.level_name }}</b></h5>
+                        <!-- Search Form -->
+                        <div class="form-inline justify-content-end mb-3" style="margin-right:30px;">
+                            <div class="form-group mx-sm-3 mb-2">
+                                <input type="text" id="searchInput" class="form-control" placeholder="Search student...">
+                            </div>
+                        </div>
+                        <div class="card-body table-responsive p-0 mb-3">
+                            
+
+                            <table class="table table-hover text-nowrap table-striped">
+                                <thead style="font-size:14px;">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Fee for Current Term GH₵</th>
+                                        <th>Arrears From Last Term GH₵</th>
+                                        <th>Amount Due Debit GH₵</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="feesTable" style="font-size:14px;">
+                                    {% for student, fees in fees_by_level.items %}
+                                        {% for fee in fees %}
+                                            <tr>
+                                                <td>{{ forloop.parentloop.counter }}. {{ student.admin.get_full_name }}</td>
+                                                <td>{{ fee.total_fees }}</td>
+                                                <td>{{ fee.arrears_from_last_term }}</td>
+                                                <td><b>{{ fee.overall_fees }}</b></td>
+                                                <td><a href="{% url 'update_fees' fee.id %}"><b>Payment</b></a></td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <div id="noResults" class="alert alert-warning" style="display: none; text-align: center;">
+                                No student with such name.
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <div class="centered-select" style="margin-top: 20px;">
+                {% if staff_assigned_to_level %}
+                    <a href="{% url 'download_student_results' student_level_id academic_year_id semester_id %}" class="btn btn-secondary">Download Results</a>
+                {% endif %}
+            </div>
+        {% endif %}
+        <div class="form-group" style="text-align: center; font-size: large; font-style: normal; font-weight: bolder;">
+            <div id="error_results" style="display:none; color: red;"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .results-container {
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .table {
+        margin: 0 auto;
+        width: 90%;
+    }
+
+    .table th, .table td {
+        text-align: center;
+    }
+
+    .centered-select {
+        text-align: center;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+    }
+
+    .form-inline .form-control {
+        width: auto;
+        display: inline-block;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const feesTable = document.getElementById('feesTable');
+        const noResults = document.getElementById('noResults');
+        const rows = feesTable.getElementsByTagName('tr');
+
+        searchInput.addEventListener('keyup', function() {
+            const query = searchInput.value.toLowerCase();
+            let found = false;
+
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                const nameCell = cells[0];
+                if (nameCell) {
+                    const name = nameCell.textContent.toLowerCase();
+                    if (name.indexOf(query) > -1) {
+                        rows[i].style.display = '';
+                        found = true;
+                    } else {
+                        rows[i].style.display = 'none';
+                    }
+                }
+            }
+
+            noResults.style.display = found ? 'none' : 'block';
+        });
+    });
+</script>
+
+{% endblock main_content %}

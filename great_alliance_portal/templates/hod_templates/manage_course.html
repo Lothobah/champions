@@ -1,0 +1,54 @@
+{% extends 'hod_templates/base_template.html' %}
+{% block main_content %}
+  <!-- Main content -->
+    <section class="content" style="margin-top: 70px;">
+      <div class="container-fluid">
+        <div class="section-title">
+        
+          <p style="font-size: large;">
+            <b>Review & Update Subjects to make sure they are up to date.</b>
+          </p>
+        </div>
+        <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title" style="color: black;">All Subjects.</h5>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                  <table class="table table-hover text-nowrap">
+                    <thead>
+                      <tr style="color: lightslategray; font-family: Georgia, 'Times New Roman', Times, serif;">
+                        <!--<th>Subject Code</th>-->
+                        <th>Subject Name</th>
+                        <th>Class</th>
+                        <th>Teacher</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for course in courses %}
+                      <tr>
+                        <!--<td>{{ course.course_code }}</td>-->
+                        <td>{{ course.course_name }}</td>
+                        <td>{{ course.student_level_id.level_name }}</td>
+                        <td>{{ course.staff_id.first_name }} {{course.staff_id.last_name }}</td>
+                        
+                        
+                        
+                        <td><a href="/edit_course/{{course.id}}" class="btn btn-secondary">Edit</a></td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+          </div>
+      </div>
+    </section>
+  <!-- /.content -->
+{% endblock main_content %}

@@ -1,0 +1,83 @@
+{% extends 'hod_templates/base_template.html' %}
+{% block main_content %}
+
+<main id="main">
+  <!-- ======= Contact Section ======= -->
+  <section id="contact" class="contact" style="margin-top: 50px;">
+    <div class="container" data-aos="fade-up">
+
+      <div class="section-title">
+        
+        <p style="font-size: large;">
+          <b>Update <i>{{ course.course_name }}</i></b></p>
+      </div>
+           
+
+        <div class="row mt-5" style="border: 1px solid black;">
+        
+          <div class="col-lg-8 mt-5 mt-lg-0">
+        
+            <form action="/edit_course_save" method="post" role="form" class="">
+              {% csrf_token %}
+              <div class="row" style="margin-top: 25px;">
+                  <h5>
+                    {% if messages %}
+                    <!--<div class="col-12">-->
+                    {% for message in messages %}
+                  
+                    {% if message.tags == 'error' %}
+                    <h5 style="color: red;">{{message}}</h5>
+                    {% endif %}
+                    {% if message.tags == 'success' %}
+                    <div class="alert alert-success" style="text-align: center;">{{ message }}</div>
+                    {% endif %}
+                    {% endfor %}
+                    <!--</div>-->
+                    {% endif %}
+                  </h5>
+                <!--<div class="col-md-6 form-group">
+                  <label style="color:black">Subject Code:</label>
+                  <input type="text" name="course_code" class="form-control" placeholder="Course Code"
+                    value="{{ course.course_code }}">
+                  <input type="hidden" class="form-control" name="course_id" value="{{course.id}}">
+                </div>-->
+                <div class="col-md-6 form-group">
+                  <label style="color:black">Subject Name:</label>
+                  <input type="text" name="course_name" class="form-control" placeholder="Course" 
+                  value="{{ course.course_name }}">
+                  <input type="hidden" class="form-control" name="course_id" value="{{course.id}}">
+                </div>
+                <div class="col-md-6 form-group mt-3 mt-md-0">
+                  <label style="color: black;">Class:</label>
+                  <select class="form-control" name="level_name">
+                    {% for level in level %}
+                    <option value="{{ level.id}}" {% if level.id == course.student_level_id.id %} selected {% endif %}>{{level.level_name}}
+                    </option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-md-6 form-group mt-3 mt-md-0">
+                  <label style="color: black;">Teacher:</label>
+                  <select class="form-control" name="staff">
+                    {% for staff in staffs %}
+                    <option value="{{ staff.id}}" {% if staff.id == course.staff_id.id %} selected {% endif %}>{{staff.first_name}}
+                      {{staff.last_name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="text-center">
+                <button type="submit" style="border-radius: 5px;margin-bottom: 45px;" 
+                class="form-control btn btn-secondary">Submit</button></div>
+            </form>
+        
+          </div>
+        
+        </div>
+
+    </div>
+  </section><!-- End Contact Section -->
+
+</main><!-- End #main -->
+
+{% endblock main_content %}

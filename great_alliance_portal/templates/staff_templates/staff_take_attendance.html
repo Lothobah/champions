@@ -1,0 +1,128 @@
+{% extends 'staff_templates/base_template.html' %}
+{% block main_content %}
+
+<main id="main">
+  <!-- ======= Contact Section ======= -->
+  <section id="contact" class="contact" style="margin-top: 75px;">
+    <div class="container" data-aos="">
+      <div class="section-title">
+        <p style="text-transform: capitalize;"><b>Take Attendance.</b></p>
+      </div>
+      <hr>
+
+      <div class="row mt-5" style="border: 0.5px solid gray; border-radius: 20px;">
+        <div class="col-lg-8 mt-5 mt-lg-0">
+          <div class="card-body">
+            <div class="form-group">
+              <label style="color: black;">Class</label>
+              <select class="form-control" name="student_level" id="student_level">
+                {% for student_level in student_levels %}
+                <option value="{{ student_level.id }}">{{ student_level.level_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+              <label style="color:black">Please Select Academic Year</label>
+              <select class="form-control" name="academic_year" id="academic_year">
+                {% for academic_year in academic_years %}
+                <option value="{{ academic_year.id }}">{{ academic_year.academic_year }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+              <label style="color: black;">Please Select Current Term</label>
+              <select class="form-control" name="semester" id="semester">
+                {% for semester in semesters %}
+                <option value="{{ semester.id }}">{{ semester.semester }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+              {% if messages %}
+              <div class="col-12">
+                {% for message in messages %}
+                {% if message.tags == 'error' %}
+                <div class="alert alert-danger" style="margin-top: 10px;">{{ message }}</div>
+                {% endif %}
+                {% if message.tags == 'success' %}
+                <div class="alert alert-success" style="margin-top: 10px;">{{ message }}</div>
+                {% endif %}
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="button" class="btn btn-secondary btn-block" id="fetch_student">Fetch Student</button>
+          </div>
+          <div id="student_data" class="card-body">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section><!-- End Contact Section -->
+
+</main><!-- End #main -->
+
+{% endblock main_content %}
+{% block custom_js %}
+<script>
+  $(document).ready(function () {
+    $("#fetch_student").click(function () {
+      var student_level = $("#student_level").val();
+      var academic_year = $("#academic_year").val();
+      var semester_id = $("#semester_id").val();
+      $.ajax({
+        url: '{% url 'get_students' %}',
+        type: 'POST',
+        data: { student_level: student_level, academic_year: academic_year, semester_id: semester_id },
+      })
+        .done(function (response) {
+          var json_data = JSON.parse(JSON.stringify(response));
+          console.log(json_data);
+          var div_data = "<div class='form-group'><label style='color:black'>Please Select Attendance date: </label><input type='date' name='attendance_date' id='attendance_date' class='form-control'></div><div class='form-group'><div class='row'>";
+          for (key in json_data) {
+            div_data += "<div  class='row-lg-2'><div class='form-check'><input type='checkbox' checked='checked' name='student_data[]' value='" + json_data[key]['id'] + "'><label style='color:black' class='form-check-label'>" + json_data[key]['name'] + "</label></div></div>";
+          }
+          div_data += "</div></div>";
+          div_data += "<button id='save_attendance' class='btn btn-secondary btn-block' type='button'>Save Attendance Data</button>";
+          $("#student_data").html(div_data);
+        })
+        .fail(function () {
+          alert("Oops, something went wrong.");
+        });
+
+      $(document).on("click", "#save_attendance", function () {
+        $(this).attr("disabled", "disabled");
+        $(this).text("Saving Attendance data...");
+        var student_data = $("input[name='student_data[]']").map(function () {
+          return { "id": $(this).val(), "status": $(this).is(":checked") ? 1 : 0 };
+        }).get();
+        var attendance_date = $("#attendance_date").val();
+        var student_level_id = $("#student_level").val();
+        var academic_year_id = $("#academic_year").val();
+        var semester_id = $("#semester").val();
+        console.log(student_data);
+        student_data = JSON.stringify(student_data);
+
+        $.ajax({
+          url: '{% url 'save_attendance_data' %}',
+          type: 'POST',
+          data: { student_ids: student_data, attendance_date: attendance_date, student_level_id: student_level_id, academic_year_id: academic_year_id, semester_id: semester_id },
+        })
+          .done(function (response) {
+            if (response == "OK") {
+              alert("Attendance Saved");
+            } else {
+              alert("Error in Saving Data.");
+            }
+            location.reload();
+          })
+          .fail(function () {
+            alert("Error in saving student data.");
+          });
+      });
+    });
+  });
+</script>
+{% endblock custom_js %}

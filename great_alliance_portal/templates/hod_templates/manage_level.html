@@ -1,0 +1,50 @@
+{% extends 'hod_templates/base_template.html' %}
+{% block main_content %}
+  <!-- Main content -->
+    <section class="content" style="margin-top: 70px;">
+      <div class="container-fluid">
+        <div class="section-title">
+        
+          <p style="font-size: large;">
+            <b>Review & Update a class.</b>
+          </p>
+        </div>
+        <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title" style="color: black;">Classes.</h5>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                  <table class="table table-hover text-nowrap">
+                    <thead>
+                      <tr style="color: lightslategray; font-family: Georgia, 'Times New Roman', Times, serif;">
+                        <!--<th>Subject Code</th>-->
+                        <th>Class</th>
+                        <th> Class teacher</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for student_level in student_level %}
+                      <tr>
+                        <!--<td>{{ course.course_code }}</td>-->
+                        <td>{{ student_level.level_name }}</td>
+                        <td>{{ student_level.staff_id.first_name }} {{student_level.staff_id.last_name }}</td>
+                        
+                        <td><a href="/edit_level/{{student_level.id}}" class="btn btn-secondary">Edit</a></td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+          </div>
+      </div>
+    </section>
+  <!-- /.content -->
+{% endblock main_content %}

@@ -1,0 +1,91 @@
+{% extends 'hod_templates/base_template.html' %}
+{% block main_content %}
+<!-- Main content -->
+<section class="content" style="margin-top: 20px;">
+    <div class="container-fluid">
+        <div class="section-title">
+            <p style="font-size: large;">
+                <b>Review & Update students to make sure they are up to date.</b>
+            </p>
+        </div><br>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title" style="color: black; text-align: center;
+                        font-family: 'Times New Roman', Times, serif;">Total students: {{ total_students }}</h5>
+                    </div>
+                    <!-- /.card-header -->
+                    <form class="form-group" action="{% url 'view_students' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label style="color: black;"><b>Class:</b></label>
+                        <select class="form-control" style="text-align: center;" name="student_level" id="student_level" required>
+                          <option value="">Select Class</option>
+                          {% for level in student_level %}
+                          <option value="{{ level.id }}" {% if level.id|stringformat:"s" == student_level_id|stringformat:"s" %} selected {% endif %}>
+                            {{ level.level_name }}
+                          </option>
+                          {% endfor %}
+                        </select></br>
+                        
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-secondary btn-block" id="fetch_results" value="Display Students">
+                        </div>
+                    </form>
+                    {% if students %}
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr
+                                    style="color: lightslategray; font-family: Georgia, 'Times New Roman', Times, serif;">
+                                    <th>ID</th>
+                                    <th>USERNAME</th>
+                                    <!--<th>EMAIL</th>-->
+                                    <th>NAME</th>
+                                    <th>CLASS</th>
+                                    <th>PROFILE PIC</th>
+                                    <th>CONTACT</th>
+                                    <th>GENDER</th>
+                                    <th>BIRTH DATE</th>
+                                    <th>HOME TOWN</th>
+                                    <th>ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in students %}
+                                <tr>
+                                    <td>{{ student.admin.id }}</td>
+                                    <td>{{ student.admin.username }}</td>
+                                    <!--<td>{{ student.admin.email }}</td>-->
+                                    <td>{{ student.admin.first_name }} {{ student.admin.last_name }}</td>
+                                    <td>{{ student.student_level_id.level_name }}</td>
+                                    <td>
+                                        <img src="{{ student.profile_pic }}" alt="student_profile pic" style="height: 50px; width: 60px;">
+                                    </td>
+                                    <td>{{ student.parent_phone }}</td>
+                                    <td>{{ student.gender }}</td>
+                                    <td>{{ student.date_of_birth }}</td>
+                                    <td>{{ student.home_town }}</td>
+                                    <td><a href="/edit_student/{{student.admin.id}}" class="btn btn-success">Edit</a></td>
+                                    <td>
+                                        <form method="POST" action="{% url 'delete_student' student.admin.id %}"
+                                            onclick="return confirm('Are you sure you want to delete {{ student.admin.first_name}} {{ student.admin.last_name }}?')">
+                                            {% csrf_token %}
+                                            <input type="submit" name="delete" value="Delete" class="btn btn-danger">
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}

@@ -1,1 +1,1 @@
-# great_alliance
+# great-alliance-web-app

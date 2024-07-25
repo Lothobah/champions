@@ -1,0 +1,193 @@
+{% extends 'staff_templates/base_template.html' %}
+{% block main_content %}
+<div class="super_container">
+  <form class="" action="{% url 'save_student_result' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="card-body">
+      <div class="centered-select" style="margin-top:70px;">
+        <h6 style="font-size:12px;">
+          {% if messages %}
+            {% for message in messages %}
+              {% if message.tags == 'error' %}
+                <div class="alert alert-danger" style="margin-top: 10px;">{{message}}</div>
+              {% endif %}
+              {% if message.tags == 'success' %}
+                <div class="alert alert-success" style="margin-top: 10px; text-align: center;">{{message}}</div>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </h6>
+        <label for="student_level" style="color: black;">Select Class</label>
+        <select class="form-control" name="student_level" id="student_level" required>
+          {% for level in student_levels %}
+          <option value="{{ level.id }}" {% if level.id == student_level_id %} selected {% endif %}>
+            {{ level.level_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="centered-select" style="margin-top:25px;">
+        <label for="course" style="color: black;">Select Subject</label>
+        <select class="form-control" name="course" id="course" required>
+          <!-- Courses will be populated dynamically based on the selected class -->
+        </select>
+      </div>
+      <div class="centered-select" style="margin-top:25px;">
+        <label for="academic_year" style="color: black;">Select Academic Year</label>
+        <select class="form-control" name="academic_year" id="academic_year" required>
+          {% for academic_year in academic_years %}
+          <option value="{{ academic_year.id }}" {% if academic_year.id == academic_year_id %} selected {% endif %}>
+            {{ academic_year.academic_year }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="centered-select" style="margin-top:25px;">
+        <label for="semester" style="color: black;">Select Term</label>
+        <select class="form-control" name="semester" id="semester" required>
+          {% for semester in semesters %}
+          <option value="{{ semester.id }}" {% if semester.id == semester_id %} selected {% endif %}>
+            {{ semester.semester }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="centered-select" style="margin-top:25px;">
+        <button type="button" class="btn btn-secondary" id="fetch_student">Fetch Student</button>
+      </div>
+      <div class="row" id="student_data_container" style="margin-top: 25px;">
+        <!-- Dynamic student data will be inserted here -->
+      </div>
+      <div class="centered-select" style="margin-top: 25px;">
+        <button id="save_results" class="form-control btn btn-secondary" type='submit' style="display:none;">Save Result</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock main_content %}
+
+{% block custom_js %}
+<script>
+  $(document).ready(function () {
+    function loadCourses(student_level) {
+      $.ajax({
+        url: '{% url 'get_courses_by_level' %}',
+        type: 'POST',
+        data: {
+          student_level: student_level,
+          csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function (response) {
+          var course_select = $("#course");
+          course_select.empty();
+          if (response.courses.length > 0) {
+            response.courses.forEach(function (course) {
+              course_select.append(new Option(course.course_name, course.id));
+            });
+          } else {
+            course_select.append(new Option("No courses available", ""));
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error("Error in fetching courses: ", error); // Debugging information
+          alert("Error in fetching courses");
+        }
+      });
+    }
+
+    $("#student_level").change(function () {
+      var student_level = $(this).val();
+      console.log("Selected level ID: " + student_level); // Debugging information
+      loadCourses(student_level);
+    });
+
+    $("#fetch_student").click(function () {
+      var student_level = $("#student_level").val();
+      var course_id = $("#course").val();
+      console.log("Fetching students for level ID: " + student_level + " and course ID: " + course_id); // Debugging information
+
+      $.ajax({
+        url: '{% url 'get_students_by_subjects' %}',
+        type: 'POST',
+        data: {
+          student_level: student_level,
+          course_id: course_id,
+          csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function (response) {
+          console.log("Students received: ", response.students); // Debugging information
+          var student_data_container = $("#student_data_container");
+          student_data_container.empty();
+          
+          var columnClass = "col-md-6"; // Adjust column width as needed
+          
+          response.students.forEach(function (student) {
+            var studentDataHTML = "<div class='" + columnClass + " mb-4'>" +
+              "<div class='student-info' style='padding: 10px; border: 1px solid #ddd; border-radius: 4px;'>" +
+              "<h5><b>" + student.name + "</b></h5>";
+
+            studentDataHTML += "<div class='input-fields'>";
+            student.courses.forEach(function (course) {
+              studentDataHTML += "<div class='mb-2'>" +
+                "<input type='hidden' name='student_id[]' value='" + student.id + "'>" +
+                "<input type='hidden' name='course_id_" + student.id + "[]' value='" + course.id + "'>" +
+                
+                "<input type='number' name='individual_test_score_" + student.id + "_" + course.id + "' class='form-control mb-1' placeholder='Enter Individual Test Score (0-15)' min='0' max='15' oninput='validateMark(this, 15)'>" +
+                
+                "<input type='number' name='group_work_score_" + student.id + "_" + course.id + "' class='form-control mb-1' placeholder='Enter Group Work Score (0-15)' min='0' max='15' oninput='validateMark(this, 15)'>" +
+                
+                "<input type='number' name='class_test_score_" + student.id + "_" + course.id + "' class='form-control mb-1' placeholder='Enter Class Test Score (0-15)' min='0' max='15' oninput='validateMark(this, 15)'>" +
+                
+                "<input type='number' name='project_score_" + student.id + "_" + course.id + "' class='form-control mb-1' placeholder='Enter Project Score (0-15)' min='0' max='15' oninput='validateMark(this, 15)'>" +
+                
+                "<input type='number' name='exam_mark_" + student.id + "_" + course.id + "' class='form-control mb-1' placeholder='Enter Exam Score (0-100)' min='0' max='100' oninput='validateMark(this, 100)'>" +
+                
+                "<button id='save_results' class='form-control btn btn-secondary' type='submit' style=''>Save Result</button>" +
+                "</div>";
+            });
+            
+            studentDataHTML += "</div></div></div>";
+
+            student_data_container.append(studentDataHTML);
+          });
+
+          // Show the Save Result button after student data has been populated
+          $("#save_results").show();
+        },
+        error: function (xhr, status, error) {
+          console.error("Error in fetching students: ", error); // Debugging information
+          alert("Error in fetching students");
+        }
+      });
+    });
+
+    function validateMark(input, max) {
+      var value = parseFloat(input.value);
+      if (isNaN(value) || value < 0 || value > max) {
+        input.setCustomValidity('Please enter a valid number between 0 and ' + max + '.');
+        input.reportValidity();
+      } else {
+        input.setCustomValidity('');
+      }
+    }
+
+    // Automatically trigger change event to load courses for the initial selected level
+    $("#student_level").trigger('change');
+
+    // Form submission validation
+    $("form").on("submit", function (event) {
+      var isValid = true;
+      $("input[type='number']").each(function () {
+        validateMark(this, this.placeholder.includes('100') ? 100 : 15);
+        if (!this.checkValidity()) {
+          isValid = false;
+          $(this).focus(); // Focus on the first invalid input
+          return false; // Break out of the each loop
+        }
+      });
+
+     
+    });
+  });
+</script>
+{% endblock custom_js %}

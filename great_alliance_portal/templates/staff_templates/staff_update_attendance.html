@@ -1,0 +1,82 @@
+{% extends 'staff_templates/base_template.html' %}
+{% block main_content %}
+  <!-- Main content -->
+
+  <main id="main">
+    <section id="contact" class="contact" style="margin-top: 75px;">
+      <div class="container" data-aos="">
+        <div class="section-title">
+          <p style="text-transform: capitalize;"><b>View Attendance</b></p>
+        </div>
+        <hr>
+  
+        <div class="row mt-5" style="border: 0.5px solid gray; border-radius: 20px;">
+          <div class="col-lg-8 mt-5 mt-lg-0">
+            <div class="card-body">
+              <div class="form-group">
+                <label style="color: black;">Select Class</label>
+                <select style="margin-left: 50px" class="form-control" name="student_level" id="student_level">
+                  {% for student_level in student_levels %}
+                  <option value="{{ student_level.id }}">{{ student_level.level_name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label style="color: black;">Select Academic Year</label>
+                <select class="form-control" name="academic_year" id="academic_year">
+                  {% for academic_year in academic_years %}
+                  <option value="{{ academic_year.id }}">{{ academic_year.academic_year }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label style="color: black;">Select Current Term</label>
+                <select class="form-control" name="semester" id="semester">
+                  {% for semester in semesters %}
+                  <option value="{{ semester.id }}">{{ semester.semester }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="card-footer">
+                <button type="button" class="btn btn-secondary btn-block" id="fetch_attendance">Fetch Attendance</button>
+              </div>
+              <div id="attendance_data" class="card-body"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  {% endblock main_content %}
+  {% block custom_js %}
+  <script>
+    $(document).ready(function () {
+      $("#fetch_attendance").click(function () {
+        var student_level = $("#student_level").val();
+        var academic_year = $("#academic_year").val();
+        var semester = $("#semester").val();
+        $.ajax({
+          url: '{% url 'staff_update_attendance' %}',
+          type: 'POST',
+          data: {
+            student_level: student_level,
+            academic_year: academic_year,
+            semester: semester
+          },
+        })
+        .done(function (response) {
+          var json_data = response.attendance_data;
+          var table = "<table class='table'><thead><tr><th>Student Name</th><th>Total Attendance</th><th>Present</th><th>Absent</th></tr></thead><tbody>";
+          json_data.forEach(function (item) {
+            table += "<tr><td>" + item.student_name + "</td><td>" + item.total_attendance + "</td><td>" + item.attendance_present + "</td><td>" + item.attendance_absent + "</td></tr>";
+          });
+          table += "</tbody></table>";
+          $("#attendance_data").html(table);
+        })
+        .fail(function () {
+          alert("An error occurred while fetching attendance data.");
+        });
+      });
+    });
+  </script>
+  {% endblock custom_js %}

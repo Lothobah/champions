@@ -1,0 +1,48 @@
+{% extends 'staff_templates/base_template.html' %}
+
+{% block main_content %}
+
+<div class="container mt-5">
+    <h5 style="margin-top:90px;">Select a class to view students.</h5>
+    
+    <form method="get" action="{% url 'staff_view_students_by_level' %}">
+        <div class="form-group">
+            <label for="level_id">Select Class</label>
+            <select id="level_id" name="level_id" class="form-control">
+                <option value="">-- Select Class --</option>
+                {% for level in levels %}
+                <option value="{{ level.id }}" {% if level.id|stringformat:"s" == selected_level %}selected{% endif %}>
+                    {{ level.level_name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-secondary mt-3">Filter Students</button>
+    </form>
+    
+    {% if students %}
+    <h6 class="mt-5">Students</h6>
+    <div class="row">
+        {% for student in students %}
+        <div class="col-md-6 mb-3">
+            <div class="d-flex align-items-center">
+                <div class="flex-shrink-0">
+                    <span class="badge bg-secondary">{{ forloop.counter }}.</span>
+                </div>
+                <div class="flex-grow-1 ms-2">
+                    <a href="{% url 'staff_view_students_results' student_id=student.id %}" style="color:light-blue;">
+                        {{ student.admin.first_name }} {{ student.admin.last_name }}
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p>No students found for the selected level.</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

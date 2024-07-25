@@ -1,0 +1,53 @@
+{% extends 'hod_templates/base_template.html' %}
+{% block main_content %}
+<!-- ======= Frequently Asked Questions Section ======= -->
+<section id="faq" class="faq section-bg" style="margin-top: 70px;">
+    <div class="container">
+
+        <div class="section-title">
+            <h2 data-aos="fade-in">ALUMNI</h2>
+            <!--<p data-aos="fade-in"></p>-->
+        </div>
+        {% for student in students %}
+        {% if student.student_level_id.level_name == "Alumni" %}
+        <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up">
+
+
+            <div class="col-lg-5">
+                <i class=""></i>
+                <h4><img src="{{ student.profile_pic }}" style="width: 120px; height: 120px; box-shadow: 1px 2px 0px 1px rgba(0, 0, 0, 0.486);
+                    border-radius: 5px;" /></h4>
+                <h4><b>ID:</b> {{ student.admin.id }}</h4>
+                <h4><b>Username:</b> {{ student.admin.username }}</h4>
+                <h4><b>Sur Name:</b> {{ student.admin.first_name }}</h4>
+                <h4><b>Other Name(s):</b> {{ student.admin.last_name }}</h4>
+            </div>
+            <div class="col-lg-7">
+
+                <p><b>Home Town:</b> {{ student.home_town }}</p>
+                <p><b>Gender:</b> {{ student.gender }}</p>
+                <p><b>Date Of Birth:</b> {{ student.date_of_birth }}</p>
+                <p><b>Parent Name:</b> {{ student.parent_name }}</p>
+                <p><b>Parent's Contact:</b> {{ student.parent_phone }}</p>
+                <p><a href="{% url 'edit_student' student_id=student.admin.id %}" class="btn btn-success">Update</a>
+                <form action="{% url 'delete_student' student_id=student.admin.id %}" method="POST"
+                    onsubmit="return confirm('Are you sure you want to delete {{ kg1.admin.first_name }} {{ student.admin.last_name }} ? ')">
+                    {% csrf_token %}
+                    <!--<a href="{% url 'view_students' %}">Cancel</a>-->
+                    <input type="submit" name="Delete" value="Delete" class="btn btn-danger">
+                </form>
+                </p>
+
+            </div>
+
+
+        </div><!-- End F.A.Q Item-->
+        {% else %}
+        <p><h2><b>There is no Alum.</b></h2></p>
+        {% endif %}
+        {% endfor %}
+
+    </div>
+</section><!-- End Frequently Asked Questions Section -->
+
+{% endblock main_content %}

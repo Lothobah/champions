@@ -1,0 +1,75 @@
+{% load static %}
+
+<!-- ======= Header ======= -->
+<header id="header" style="height: 65px;">
+    <div class="container d-flex align-items-center justify-content-between"
+    style="height: 40px;">
+
+        <div class="logo">
+            <h1><img src="{% static "assets/img/clients/client-4.png" %}" class="logo-image" alt="User Image"><a href="index.html" class="manage-staff-link">Great Alliance Portal | Admin<span>.</span>
+                
+            </a>
+                
+            </h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!--<a href="index.html"><img src="{% static "assets/img/king.jpg" %}" alt="" class="img-fluid"></a>-->
+        </div>
+
+        <nav id="navbar" class="navbar" style="color: black;">
+            <ul style="color: black;">
+                <li>
+                    {% url 'admin_homepage' as admin_homepage %}
+                    <a class="nav-link scrollto {% if request.path == admin_homepage %} active {% endif %}" href="{% url 'admin_homepage' %}">Home</a>
+                </li>
+             
+                <li>
+                    {% url 'manage_staffs' as manage_staffs %}
+                    <a class="nav-link scrollto {% if request.path == manage_staffs %} active {% endif %}" 
+                    href="{% url 'manage_staffs' %}">Manage Staffs</a>
+                </li>
+                <li>
+                    {% url 'manage_students' as manage_students %}
+                    <a class="nav-link scrollto {% if request.path == manage_students %} active {% endif %}" 
+                    href="{% url 'manage_students' %}">Manage Students</a>
+                </li>
+                <li>
+                    {% url 'academic_affairs' as academic_affairs %}
+                    <a class="nav-link scrollto {% if request.path == academic_affairs %} active {% endif %}" 
+                    href="{% url 'academic_affairs' %}">
+                        Academic Management</a>
+                </li>
+                <!--<li class="dropdown">
+                    {% url 'manage' as manage %}
+                    <a class="{% if request.path == manage %} active {% endif %}" href="#">
+                        <span>Hello {{ user.first_name }} {{ user.last_name }} !</span> <i class="bi bi-chevron-down"></i></a>
+                    <ul>
+                        <li>
+
+                            {% url 'admin_profile' as admin_profile %}
+                            
+                            <a class="nav-link scrollto {% if request.path == admin_profile %} active {% endif %}"
+                                href="{% url 'admin_profile' %}">Profile</a>
+                        </li>
+                        
+                        <li><a href="#">Change Password</a></li>
+                        
+                        <li>
+                            {% url 'about' as about %}
+                            <a class="{% if request.path == about %} active {% endif %}" 
+                            href="{% url 'about' %}">
+                                About</a>
+                        </li>
+                    </ul>
+                </li>-->
+                <li>
+                    {% url 'do_logout' as do_logout %}
+                    <a class="nav-link scrollto {% if request.path == do_logout %} active {% endif %}"
+                     href="{% url 'do_logout' %}">Log Off</a>
+                </li>
+                
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+
+    </div>
+</header>

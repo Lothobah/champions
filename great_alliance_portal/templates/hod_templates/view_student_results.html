@@ -1,0 +1,82 @@
+{% extends 'hod_templates/base_template.html' %}
+
+{% block main_content %}
+<div class="super_container">
+<!--<div class="container mt-5">-->
+    <h5 style="margin-top:90px; margin-bottom:40px;">Results for <b>{{ student.admin.first_name }} {{ student.admin.last_name }}</b></h5>
+    
+    <form method="get" action="{% url 'view_student_results' student_id=student.id %}">
+        <div class="row">
+            <div class="centered-select">
+                <div class="form-group">
+                    <label for="academic_year_id">Select Academic Year</label>
+                    <select id="academic_year_id" name="academic_year_id" class="form-control" required>
+                        <option value="">-- Select Academic Year --</option>
+                        {% for year in academic_years %}
+                        <option value="{{ year.id }}" {% if year.id|stringformat:"s" == selected_academic_year %}selected{% endif %}>
+                            {{ year.academic_year }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="centered-select">
+                <div class="form-group">
+                    <label for="semester_id">Select Semester</label>
+                    <select id="semester_id" name="semester_id" class="form-control" required>
+                        <option value="">-- Select Semester --</option>
+                        {% for semester in semesters %}
+                        <option value="{{ semester.id }}" {% if semester.id|stringformat:"s" == selected_semester %}selected{% endif %}>
+                            {{ semester.semester }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group centered-select">
+                <button style="margin-right:24px;" type="submit" class="btn btn-secondary ">Filter Results</button>
+            </div>
+        </div>
+    </form>
+    
+    {% if results %}
+    <!--<h3 class="mt-5">Results</h3>-->
+    <table class="table table-bordered table-responsive" style="margin-top:50px;">
+        <thead>
+            <tr>
+                <th>SUBJECT</th>
+                <th>INDIVIDUAL TEST</th>
+                <th>GROUP WORK</th>
+                <th>CLASS TEST</th>
+                <th>PROJECT</th>
+                <th>TOTAL 50%</th>
+                <th>EXAM 50%</th>
+                <th>TOTAL 100%</th>
+                <th>GRADE</th>
+                <th>REMARK</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr>
+                <td>{{ result.course_id.course_name }}</td>
+                <td>{{ result.individual_test_score|floatformat:0  }}</td>
+                <td>{{ result.group_work_score|floatformat:0  }}</td>
+                <td>{{ result.class_test_score|floatformat:0  }}</td>
+                <td>{{ result.project_score|floatformat:0  }}</td>
+                <td>{{ result.assignment_mark|floatformat:0  }}</td>
+                <td>{{ result.exam_mark|floatformat:0  }}</td>
+                <td><b>{{ result.total_mark|floatformat:0  }}</b></td>
+                <td>{{ result.grade }}</td>
+                <td>{{ result.remark }}</td>
+            </tr>
+                
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="centered-select" style="color:red;">No results for the selected criteria.</p>
+    {% endif %}
+<!--</div>-->
+</div>
+{% endblock %}

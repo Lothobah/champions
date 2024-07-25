@@ -1,0 +1,65 @@
+{% extends "bursar_templates/base_template.html" %}
+{% block main_content %}
+<div class="super_container">
+    <!-- Flex container to hold both elements -->
+    <div class="d-flex justify-content-between align-items-start" style="margin-top: 80px;">
+        <div class="text-center w-100">
+            <div class="card" style="margin: 20px auto; padding: 15px; max-width: 600px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                <h5 class="text-center">Add Fees</h5>
+                <form method="POST" class="mx-3 mx-md-5" style="margin-top: 10px;">
+                    {% csrf_token %}
+                    <input type="hidden" name="student_level" value="{{ selected_level_id }}">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <label for="student_level" style="font-size: 0.9em;">Select Class:</label>
+                            <select name="student_level" id="student_level" class="form-control form-control-sm" style="font-size: 0.7em; height: 30px; padding: 5px; width: 80%; text-align:center;">
+                                {% for level in student_levels %}
+                                <option value="{{ level.id }}">{{ level.level_name }}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="school_fees" style="font-size: 0.9em;">School Fees:</label>
+                            <input class="form-control form-control-sm" type="number" step="0.01" name="school_fees" id="school_fees" required style="font-size:0.7em; height: 30px; padding: 5px; width: 80%;">
+                            <label for="extra_classes" style="font-size: 0.9em;">Extra Classes:</label>
+                            <input class="form-control form-control-sm" type="number" step="0.01" name="extra_classes" id="extra_classes" required style="font-size:0.7em; height: 30px; padding: 5px; width: 80%;">
+                            <label for="stationary" style="font-size: 0.9em;">Stationary:</label>
+                            <input class="form-control form-control-sm" type="number" step="0.01" name="stationary" id="stationary" required style="font-size:0.7em; height: 30px; padding: 5px; width: 80%;">
+                            <label for="sport_culture" style="font-size: 0.9em;">Sport & Culture:</label>
+                            <input class="form-control form-control-sm" type="number" step="0.01" name="sport_culture" id="sport_culture" required style="font-size:0.7em; height: 30px; padding: 5px; width: 80%;">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="ict" style="font-size: 0.9em;">ICT:</label>
+                            <input class="form-control form-control-sm" type="number" step="0.01" name="ict" id="ict" required style="font-size:0.7em; height: 30px; padding: 5px; width: 80%;">
+                            <label for="pta" style="font-size: 0.9em;">PTA:</label>
+                            <input class="form-control form-control-sm" type="number" step="0.01" name="pta" id="pta" required style="font-size:0.7em; height: 30px; padding: 5px; width: 80%;">
+                            <label for="maintenance" style="font-size: 0.9em;">Maintenance:</label>
+                            <input class="form-control form-control-sm" type="number" step="0.01" name="maintenance" id="maintenance" required style="font-size:0.7em; height: 30px; padding: 5px; width: 80%;">
+                            <label for="light_bill" style="font-size: 0.9em;">Light Bill:</label>
+                            <input class="form-control form-control-sm" type="number" step="0.01" name="light_bill" id="light_bill" required style="font-size:0.7em; height: 30px; padding: 5px; width: 80%;">
+                        </div>
+                    </div>
+                    <div class="text-center" style="margin-top: 10px;">
+                        <button type="submit" class="btn btn-secondary" style="font-size: 0.9em;">Add Fees</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="text-right mb-4" style="margin-left: auto; font-size:5px;">
+            <h6 style="font-size: 10px;"><b>Add next term fees to students.</b></h6>
+            <form class="" method="post" action="{% url 'update_fees_for_all_levels' %}" id="levyFeesForm">
+                {% csrf_token %}
+                <button class="btn btn-success" type="button" id="levyFeesButton" style="margin-right:7px; font-size: 10px;">Add New Fees</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock main_content %}
+
+{% block custom_js %}
+<script>
+    document.getElementById('levyFeesButton').addEventListener('click', function() {
+        if (confirm('Are you sure you want to levy the new fees to all students? This action will automatically add the next term\'s fees to each student\'s account.')) {
+            document.getElementById('levyFeesForm').submit();
+        }
+    });
+</script>
+{% endblock custom_js %}

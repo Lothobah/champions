@@ -1,0 +1,145 @@
+{% extends "staff_templates/base_template.html" %}
+{% load static %}
+{% block main_content %}
+
+<div class="super_container">
+	<div class="menu_container menu_mm">
+
+		<!-- Menu Close Button -->
+		<div class="menu_close_container">
+			<div class="menu_close"></div>
+		</div>
+
+	</div>
+	
+	<!-- Home -->
+
+	<div class="home">
+
+	</div>
+
+	<div class="hero_boxes">
+		<div class="hero_boxes_inner">
+			<div class="container">
+				<h5 style="color: black; text-align:centre;">Welcome {{ staff.admin.first_name }}</h5>
+				<div class="row">
+
+					<div class="col-lg-4 hero_box_col">
+            <a href="{% url 'staff_add_result' %}"class="hero_box_link">
+						<div class="hero_box d-flex flex-row align-items-center justify-content-start">
+							<img src="{% static "images/add_student_result.png" %}" class="svg" alt="">
+							<div class="hero_box_content">
+								<h2 class="hero_box_title">Add Results</h2>
+								 Click to add students terminal results.
+							</div>
+						</div></a>
+					</div>
+          
+					<div class="col-lg-4 hero_box_col">
+            <a href="{% url 'staff_view_all_results' %}" class="hero_box_link">
+						<div class="hero_box d-flex flex-row align-items-center justify-content-start">
+							<img src="{% static "images/check results.png" %}" class="svg" alt="">
+							<div class="hero_box_content">
+								<h2 class="hero_box_title">Results</h2>
+								Click to access students results.
+							</div>
+						</div>
+						</a>
+					</div>
+					<div class="col-lg-4 hero_box_col">
+						<a href="{% url 'staff_view_students_by_level' %}" class="hero_box_link">
+									<div class="hero_box d-flex flex-row align-items-center justify-content-start">
+										<img src="{% static "images/check results.png" %}" class="svg" alt="">
+										<div class="hero_box_content">
+											<h2 class="hero_box_title">Student Assessment.</h2>
+											Click to access students Assessments.
+										</div>
+									</div>
+									</a>
+								</div>
+
+					<div class="col-lg-4 hero_box_col">
+						<a href="{% url 'enroll_students' %}" class="hero_box_link">
+									<div class="hero_box d-flex flex-row align-items-center justify-content-start">
+										<img src="{% static "images/course_enroll.jpg" %}" class="svg" alt="">
+										<div class="hero_box_content">
+											<h2 class="hero_box_title">Subject Enrollment</h2>
+											Click to enroll all students in the subjects you teach.
+										</div>
+									</div>
+									</a>
+								</div>
+
+
+					{% if staff_assigned_to_a_level %}
+						<div class="col-lg-4 hero_box_col">
+							<a href="{% url 'staff_take_attendance' %}" class="hero_box_link">
+							<div  class="hero_box d-flex flex-row align-items-center justify-content-start">
+								<img src="{% static "images/attendance_1.jpeg" %}" class="svg" alt="">
+								<div class="hero_box_content">
+									<h2 class="hero_box_title">Take Attendance</h2>
+									Click to take Assessment for the class to which you are a class teacher.
+								</div>
+							</div>
+							</a>
+						</div>
+					
+
+          				<div class="col-lg-4 hero_box_col">
+            				<a href="{% url 'staff_update_attendance' %}" class="hero_box_link">
+							<div class="hero_box d-flex flex-row align-items-center justify-content-start">
+								<img src="{% static "images/view_attendance.png" %}" class="svg" alt="">
+							<div class="hero_box_content">
+								<h2 class="hero_box_title">Attendance</h2>
+								Click to view student attendance.
+							</div>
+							</div>
+							</a>
+						</div>
+						{% endif %}
+
+          <div class="col-lg-4 hero_box_col">
+            			<a href="{% url 'staff_courses' %}" class="hero_box_link">
+						<div class="hero_box d-flex flex-row align-items-center justify-content-start">
+							<img src="{% static "images/exam.svg" %}" class="svg" alt="">
+							<div class="hero_box_content">
+								<h2 class="hero_box_title">Subjects</h2>
+								Click to view all the subjects you teach
+							</div>
+						</div>
+						</a>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+	<!-- Footer -->
+
+	<footer class="footer">
+		<div class="container">
+			
+			
+
+			<!-- Footer Content -->
+
+			<div class="footer_content">
+				
+			</div>
+
+			<!-- Footer Copyright -->
+
+			<div class="footer_bar d-flex flex-column flex-sm-row align-items-center">
+				<div class="footer_copyright">
+
+				</div>
+				
+			</div>
+
+		</div>
+	</footer>
+
+</div>
+{% endblock main_content %}

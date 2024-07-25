@@ -1,0 +1,27 @@
+{% extends "bursar_templates/base_template.html" %}
+{% block main_content %}
+<div class="super_container">
+    <div class="row justify-content-center mx-5">
+        <div class="col-md-6">
+            <h6 class="text-center" style="margin-top: 100px;">Update Fees for <b>{{ fee.student_id.admin.get_full_name }}</b></h6>
+            <form method="post" class="form-group" style="color:black;">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="amount_paid">Amount Paid:</label>
+                    <input class="form-control" type="number" step="0.01" name="amount_paid" id="amount_paid">
+                </div>
+                <div class="mb-3">
+                    <label for="arrears_from_last_term">Arrears from Last Term:</label>
+                    <input class="form-control" type="number" step="0.01" name="arrears_from_last_term" id="arrears_from_last_term" value="{{ fee.arrears_from_last_term }}" {% if fee.arrears_from_last_term %} disabled {% endif %}>
+                </div>
+                <div class="text-center" style="margin-top:15px;">
+                    <button class="btn btn-secondary" type="submit">Submit</button>
+                </div>
+                {% if error_message %}
+                    <p class="text-danger text-center">{{ error_message }}</p>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock main_content %}

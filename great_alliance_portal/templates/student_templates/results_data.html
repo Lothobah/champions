@@ -1,0 +1,80 @@
+{% extends 'student_templates/base_template.html' %}
+{% block main_content %}
+
+<section class="content" style="margin-top: 70px;">
+    <div class="container-fluid">
+        
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header" style="background-color: white;">
+                        <h5 class="card-title" style="color: black;
+                        text-align: center; margin-bottom: 20px; margin-top: 15px;"><b style="color: rgba(0, 85, 255, 0.525);
+                            ">Great Alliance School.</b><br><br>
+                         RESULTS FOR SEMESTER {{ semester_obj.semester }},
+                            <b style="font-size: 20px;">{{ academic_year_obj.academic_year }}</b> ACADEMIC YEAR.
+                        </h5>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap table-striped">
+                            
+                            <tbody>
+                                <tr>
+                                    <td>Name:</td>
+                                    <td><b>{{ students.admin.first_name }} {{ students.admin.last_name }}</b></td>
+                                
+                                    <td>Programme:</td>
+                                
+                                    <td><b>{{ students.programme_id.programme_name }}</b></td>
+                                    <td></td>
+                                
+                                </tr>
+                                <tr style="border-bottom: 2px solid gray;">
+                                    <td>ID:</td>
+                                    <td><b>{{ students.admin.id }}</b></td>
+                                    <td>Year:</td>
+                                    <td><b>{{ students.student_level_id.level_name }}</b></td>
+                                    <td></td>
+                                </tr>
+                                <tr style="height: 60px;">
+                                    <td><b>Course Code</b></td>
+                                    <td><b>Course Name</b></td>
+                                    <td><b>Mark</b></td>
+                                    <td><b>Grade</b></td>
+                                    <td><b>Remark</b></td>
+                                </tr>
+                                {% for results in results %}
+                                
+                                <tr>
+                                
+                                    <td>{{ results.course_id.course_code }}</td>
+                                    <td>{{ results.course_id.course_name }}</td>
+                                    <td>{{ results.total_mark }}</td>
+                                    <td>{{ results.grade }}</td>
+                                    <td>{{ results.remark }}</td>
+                                
+                                
+                                
+                                </tr>
+                                {% endfor %}
+                                <tr style="border-top: 2px solid gray;">
+                                    <td>TOTAL:</td>
+                                    <td><b>{{ overrall_mark }}</b></td>
+                                    <td>AVERAGE:</td>
+                                    <td><b>{{ average_mark }}</b></td>
+                                    
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock main_content %}

@@ -1,0 +1,74 @@
+{% extends 'hod_templates/base_template.html' %}
+{% block main_content %}
+<!-- Main content -->
+<section class="content" style="margin-top: 70px;">
+    <div class="container-fluid">
+        <div class="section-title">
+
+            <p style="font-size: large;">
+                <b>Review & Update staffs to make sure they are up to date.</b>
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title" style="color: black; text-align: center;">All staffs.</h5>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr
+                                    style="color: lightslategray; font-family: Georgia, 'Times New Roman', Times, serif;">
+                                    <th>ID</th>
+                                    <th>USERNAME</th>
+                                    <th>EMAIL</th>
+                                    <th>NAME</th>
+                                    <th>PROFILE PIC</th>
+                                    <th>CONTACT</th>
+                                    <th>GENDER</th>
+                                    <th>BIRTH DATE</th>
+                                    <th>POSTAL ADDRESS</th>
+                                    <th>RESIDENTIAL ADDRESS</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for staff in staffs %}
+                                <tr>
+                                    <td>{{ staff.admin.id }}</td>
+                                    <td>{{ staff.admin.username }}</td>
+                                    <td>{{ staff.admin.email}}</td>
+                                    <td>{{ staff.admin.first_name }} {{ staff.admin.last_name }}</td>
+                                    <td><img src="{{ staff.staff_profile_pic }}" alt="staff profile pic"
+                                        style="height: 100px; width: 110px;"></td>
+                                    <td>{{ staff.phone_number }}</td>
+                                    <td>{{ staff.gender }}</td>
+                                    <td>{{ staff.date_of_birth }}</td>
+                                    <td>{{ staff.address1 }}</td>
+                                    <td>{{ staff.address2 }}</td>
+
+                                    <td><a href="/edit_staff/{{staff.admin.id}}" class="btn btn-success">Edit</a></td>
+                                    <td>
+                                        <form method="POST" action="{% url 'delete_staff' staff.admin.id %}"
+                                        onclick="return confirm('Are you sure you want to delete {{ staff.admin.first_name}} {{ staff.admin.last_name }}?')">
+                                        {% csrf_token %}
+                                        <input type="submit" name="delete" value="Delete" class="btn btn-danger">
+
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}

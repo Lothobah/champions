@@ -1,0 +1,57 @@
+
+    <div class="row mt-5" style="border: 1px solid black;
+    border-radius: 5px;">
+    
+        <div class="col-lg-8 mt-5 mt-lg-0">
+    
+            <form action="{{ action_path }}" method="post" role="form" 
+            style="margin-top: 30px;"
+             enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <h6 style="font-size:13px;">
+                        {% if messages %}
+                        <!--<div class="col-12">-->
+                        {% for message in messages %}
+    
+                        {% if message.tags == 'error' %}
+                        <div class="alert alert-success" style="text-align: center;">{{ message }}</div>
+                        {% endif %}
+                        {% if message.tags == 'success' %}
+                        <div class="alert alert-success" style="text-align: center;">{{ message }}</div>
+                        {% endif %}
+                        {% endfor %}
+                        <!--</div>-->
+                        {% endif %}
+                    </h6>
+                    {% for field in form %}
+                    <div class="col-md-6 form-group mt-3 mt-md-0">
+                        
+                        <label for="" style="color: black;"><b>{{ field.label_tag }}</b></label>
+                        {{ field }}
+                        
+                    </div>
+                    {% endfor %}
+                    
+                    <div class="col-md-6 form-group mt-3 mt-md-0">
+                        <label style="color: black;"><b>Class:</b></label>
+                        <select id="student_level_id" name="student_level_id" class="form-control">
+                        
+                            {% for level in level %}
+                            <option value="{{level.id}}" {% if level.id == student.student_level_id.id %} selected {% endif %}>
+                                {{ level.level_name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                       
+                </div>
+                <div class="form-group mt-3">
+                    <button type="submit" style="border-radius: 4px;" class="form-control btn btn-secondary">Submit</button>
+                </div>
+            </form>
+    
+        </div>
+    
+    </div>
+   

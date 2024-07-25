@@ -1,0 +1,54 @@
+{% extends 'hod_templates/base_template.html' %}
+{% block main_content %}
+
+<main id="main">
+    <!-- ======= Contact Section ======= -->
+    <section id="services" class="services section-bg" style="margin-top: 70px;">
+        <div class="container">
+
+                                <div class="form-style-5">
+                                    <form action="add_academic_year_save" method="post" role="form" class="">
+                                        {% csrf_token %}
+                                        <fieldset>
+                                            <h5>
+                                                {% if messages %}
+                                                <!--<div class="col-12">-->
+                                                {% for message in messages %}
+                                            
+                                                {% if message.tags == 'error' %}
+                                                <h5 style="color: red;">{{message}}</h5>
+                                                {% endif %}
+                                                {% if message.tags == 'success' %}
+                                                <div class="alert alert-success" style="text-align: center;">{{ message }}</div>
+                                                {% endif %}
+                                                {% endfor %}
+                                                <!--</div>-->
+                                                {% endif %}
+                                            </h5>
+                                            <legend><span class="number">+</span>Add Academic Year.</legend><br><br>
+                                            <input class="form-control" name="academic_year" type="text" required
+                                                placeholder="Enter academic year in  the format: 2020-2021" style="text-align: center;">
+                                            
+                                        
+                                            
+                                        </fieldset>
+                                        
+                                        <button type="submit" value="Apply" class="form-control">Submit</button>
+                                    </form>
+                                </div>
+
+            <div class="row">
+
+
+                    
+                   
+                
+
+            </div>
+
+        </div>
+    </section><!-- End Contact Section -->
+
+</main><!-- End #main -->
+
+{% endblock main_content %}

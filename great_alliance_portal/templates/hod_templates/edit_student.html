@@ -1,0 +1,46 @@
+{% extends 'hod_templates/base_template.html' %}
+{% block main_content %}
+
+
+<main id="main">
+
+  <section id="services" class="services section-bg" style="
+  background: white; margin-top: 20px;">
+    <div class="container">
+  
+      <div class="section-title">
+      
+        <p style="font-size: large;">
+          <b>Update {{ student.admin.first_name }} {{ student.admin.last_name }}</b>
+        </p>
+      </div>
+      <h6 style="font-size:12px;">
+        {% if messages %}
+        <!--<div class="col-12">-->
+        {% for message in messages %}
+  
+        {% if message.tags == 'error' %}
+        <h5 style="color: red;">{{message}}</h5>
+        {% endif %}
+        {% if message.tags == 'success' %}
+        <div class="alert alert-success" style="text-align: center;">{{ message }}</div>
+        {% endif %}
+        {% endfor %}
+        <!--</div>-->
+        {% endif %}
+      </h6>
+      <div class="row">
+        {% url 'edit_student_save' as action_path %}
+        {% include 'hod_templates/edit_student_form.html' with messages=messages form=form action_path=action_path button_text="Update Student"%}
+  
+  
+  
+  
+      </div>
+  
+    </div>
+  </section>
+  
+</main><!-- End #main -->
+
+{% endblock main_content %}

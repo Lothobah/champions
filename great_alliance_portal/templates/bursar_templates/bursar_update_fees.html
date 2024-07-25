@@ -1,0 +1,75 @@
+{% extends "bursar_templates/base_template.html" %}
+{% block main_content %}
+<div class="super_container">
+    <h5 class="centered-select" style="margin-top:90px; margin-bottom:1px; text-align: center;">Update Fees</h5>
+
+    <form method="GET" class="form-group mx-3 mx-md-5" style="color:black; text-align: center;">
+        {% csrf_token %}
+        <div class="row justify-content-center">
+            <h6 style="font-size:13px;">
+                {% if messages %}
+                {% for message in messages %}
+                {% if message.tags == 'error' %}
+                <div class="alert alert-danger" style="text-align: center; width: 100%; max-width: 300px; margin: 0 auto;">{{ message }}</div>
+                {% endif %}
+                {% if message.tags == 'success' %}
+                <div class="alert alert-success" style="text-align: center; width: 100%; max-width: 300px; margin: 0 auto;">{{ message }}</div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </h6>
+            <div class="centered-select">
+                <label for="student_level" style="font-size: 0.9em;">Select Student Class:</label>
+                <select class="form-control form-control-sm" name="student_level" id="student_level" onchange="this.form.submit()" style="font-size: 0.9em;">
+                    <option value="">--Select Class--</option>
+                    {% for level in student_levels %}
+                    <option value="{{ level.id }}" {% if level.id|stringformat:"s" == selected_level_id %}selected{% endif %}>{{ level.level_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </form>
+
+    {% if selected_level_id %}
+    <div class="card mx-auto mt-3" style="max-width: 800px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); margin-top: -20px;">
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="student_level" value="{{ selected_level_id }}">
+                <div class="row justify-content-center">
+                    <div class="col-md-2">
+                        <label for="school_fees" style="font-size: 0.9em;">School Fees:</label>
+                        <input class="form-control form-control-sm" type="number" name="school_fees" step="0.01" value="{{ fee_data.school_fees }}" required style="font-size: 0.9em; height: 30px; padding: 5px;">
+                        
+                        <label for="extra_classes" style="font-size: 0.9em;">Extra Classes:</label>
+                        <input class="form-control form-control-sm" type="number" name="extra_classes" step="0.01" value="{{ fee_data.extra_classes }}" required style="font-size: 0.9em; height: 30px; padding: 5px;">
+                        
+                        <label for="stationary" style="font-size: 0.9em;">Stationary:</label>
+                        <input class="form-control form-control-sm" type="number" name="stationary" step="0.01" value="{{ fee_data.stationary }}" required style="font-size: 0.9em; height: 30px; padding: 5px;">
+                        
+                        <label for="sport_culture" style="font-size: 0.9em;">Sport/Culture:</label>
+                        <input class="form-control form-control-sm" type="number" name="sport_culture" step="0.01" value="{{ fee_data.sport_culture }}" required style="font-size: 0.9em; height: 30px; padding: 5px;">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="ict" style="font-size: 0.9em;">ICT:</label>
+                        <input class="form-control form-control-sm" type="number" name="ict" step="0.01" value="{{ fee_data.ict }}" required style="font-size: 0.9em; height: 30px; padding: 5px;">
+                        
+                        <label for="pta" style="font-size: 0.9em;">PTA:</label>
+                        <input class="form-control form-control-sm" type="number" name="pta" step="0.01" value="{{ fee_data.pta }}" required style="font-size: 0.9em; height: 30px; padding: 5px;">
+                        
+                        <label for="maintenance" style="font-size: 0.9em;">Maintenance:</label>
+                        <input class="form-control form-control-sm" type="number" name="maintenance" step="0.01" value="{{ fee_data.maintenance }}" required style="font-size: 0.9em; height: 30px; padding: 5px;">
+                        
+                        <label for="light_bill" style="font-size: 0.9em;">Light Bill:</label>
+                        <input class="form-control form-control-sm" type="number" name="light_bill" step="0.01" value="{{ fee_data.light_bill }}" required style="font-size: 0.9em; height: 30px; padding: 5px;">
+                    </div>
+                </div>
+                <div class="centered-select" style="margin-top:15px; text-align: center;">
+                    <button type="submit" class="btn btn-secondary" style="font-size: 0.9em;">Update Fees</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
